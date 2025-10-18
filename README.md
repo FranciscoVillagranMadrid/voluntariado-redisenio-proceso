@@ -1,4 +1,5 @@
 # Rediseño TO-BE – Proceso de Voluntariado
+# Martin Araya Riquelme - 21.624.104-5 / Francisco Villagran Madrid - 21.483.516-9 / Gladys Carvacho - 21.205.052-0
 
 ## 📘 Descripción General
 Este proyecto forma parte de la actividad de **Rediseño de Procesos (AS-IS / TO-BE)**.  
