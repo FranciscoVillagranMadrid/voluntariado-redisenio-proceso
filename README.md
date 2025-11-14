@@ -1,114 +1,89 @@
-Rediseño TO-BE – Proceso de Voluntariado
+# Rediseño TO-BE – Proceso de Voluntariado
+Martin Araya Riquelme - 21.624.104-5  
+Francisco Villagrán Madrid - 21.483.516-9  
+Gladys Carvacho - 21.205.052-0  
 
-Martin Araya Riquelme - 21.624.104-5 / Francisco Villagrán Madrid - 21.483.516-9 / Gladys Carvacho - 21.205.052-0
+## 1. Descripción General
+Este proyecto corresponde al análisis y rediseño del proceso de Voluntariado del sistema de albergues.  
+El objetivo fue comprender el funcionamiento actual (AS-IS) y proponer un diseño mejorado (TO-BE) utilizando buenas prácticas de rediseño y una correcta separación de responsabilidades entre los actores.
 
-📘 Descripción General
+El proceso elegido fue el de Voluntariado, debido a que actualmente funciona de manera manual, con poca claridad en las responsabilidades y sin validaciones formales de disponibilidad.
 
-El proyecto consiste en analizar y rediseñar un proceso real del sistema de albergues, aplicando buenas prácticas de Ingeniería de Procesos (AS-IS / TO-BE).
-El proceso seleccionado es Voluntariado, que define cómo los voluntarios se informan, se inscriben y son asignados a un albergue.
+---
 
-Se desarrolla:
+## 2. AS-IS: Situación Actual
 
-Un AS-IS que refleja el funcionamiento actual (simple, sin validaciones ni coordinación formal).
+### Descripción general del proceso actual
+El voluntario ingresa al portal, revisa información básica y decide si participar; por su parte, el albergue gestiona la llegada de voluntarios sin coordinación estructurada.
 
-Un TO-BE con tres procesos separados:
-Voluntario, Administrador/Coordinador y Albergue, siguiendo las indicaciones del profesor y eliminando agentes incorrectos como “Sistema de Ayuda”.
+### Problemas detectados
+- No existe validación formal de disponibilidad de cupos.  
+- Falta de comunicación estructurada entre voluntario, coordinación y albergue.  
+- El flujo carece de trazabilidad.  
+- El proceso es manual y depende de comunicación informal.
 
-🔹 AS-IS: Situación Actual
+---
 
-Nombre: Proceso de Voluntariado (AS-IS)
+## 3. TO-BE: Propuesta de Rediseño
 
-Descripción:
-El voluntario ingresa al portal, revisa la información disponible y decide si desea participar.
-El albergue recibe voluntarios de manera manual y descoordinada, sin confirmaciones formales ni validaciones.
+El proceso fue reorganizado en tres flujos independientes, uno por actor, para otorgar claridad, orden y responsabilidad en cada etapa.  
+Cada actor ejecuta únicamente las tareas que le corresponden y el proceso incorpora validaciones, decisiones y manejo de excepciones.
 
-Problemas identificados
-
-Falta de comunicación entre actores.
-
-No hay validación de requisitos o cupos.
-
-No existe trazabilidad ni registro formal.
-
-La confirmación al voluntario depende de conversaciones informales.
-
-🔹 TO-BE: Propuesta de Rediseño
-
-El TO-BE se rediseñó siguiendo la rúbrica del profesor y separando claramente tres procesos independientes:
-
-1️⃣ Proceso TO-BE Voluntario
-
+### 3.1 TO-BE Voluntario
 El voluntario:
+- Accede al portal,
+- Ingresa datos y preferencias,
+- Revisa sugerencias disponibles,
+- Decide si aceptar o no la recomendación,
+- Envía su solicitud,
+- Recibe una confirmación de inscripción.
 
-Accede al portal
-
-Ingresa sus datos y preferencias
-
-Revisa sugerencias
-
-Decide si inscribirse
-
-Envía la solicitud
-
-Recibe la confirmación final
-
-✔ Sin tareas redundantes
-✔ Sin actor “sistema”
-✔ Gateways exclusivos bien utilizados
-
-2️⃣ Proceso TO-BE Administrador / Coordinador
-
+### 3.2 TO-BE Administrador / Coordinador
 El administrador:
+- Revisa solicitudes recibidas,
+- Consulta necesidades vigentes,
+- Verifica disponibilidad de cupos,
+- Asigna voluntarios cuando es posible,
+- Registra la asignación,
+- Envía la confirmación correspondiente,
+- En caso de no haber cupos, registra la solicitud en lista de espera.
 
-Revisa solicitudes recibidas
-
-Consulta necesidades vigentes
-
-Verifica cupos disponibles
-
-Asigna voluntarios cuando hay disponibilidad
-
-Registra la asignación
-
-Envia confirmación
-
-Maneja excepción: lista de espera
-
-✔ Gateway con dos salidas exclusivas (SI / NO)
-✔ Diagrama no sobrecargado
-✔ No se mezcla con funciones del albergue
-
-3️⃣ Proceso TO-BE Albergue
-
+### 3.3 TO-BE Albergue
 El albergue:
+- Recibe solicitud de confirmación,
+- Revisa requisitos y disponibilidad logística,
+- Decide si puede recibir al voluntario,
+- Confirma disponibilidad o rechaza la solicitud,
+- Envía la respuesta final.
 
-Recibe la solicitud del administrador
+---
 
-Revisa requisitos y disponibilidad
+## 4. Heurísticas de Rediseño Aplicadas
+- Resequencing / Knock-out: validar disponibilidad antes de continuar.  
+- Parallelism acotado: algunas acciones pueden ocurrir sin retrasar el flujo principal.  
+- Contact Reduction: se reduce la cantidad de pasos innecesarios.  
+- Exception Handling: se contemplan situaciones sin cupos y decisiones de rechazo.
 
-Decide si puede recibir al voluntario
+---
 
-Confirma logística o rechaza
+## 5. Impacto del Rediseño (Devil’s Quadrangle)
 
-Envía la respuesta
+| Criterio     | Impacto | Justificación |
+|--------------|---------|---------------|
+| Tiempo       | Disminuye | Flujo más ordenado y validaciones tempranas. |
+| Costo        | Disminuye | Menos retrabajo y reducción de pasos manuales. |
+| Calidad      | Aumenta | Estructura clara, mejor control de asignaciones y respuestas. |
+| Flexibilidad | Se mantiene | El proceso permite manejar excepciones sin perder coherencia. |
 
-✔ Gateway con condiciones SI/NO
-✔ Sin “sistema de ayuda”
-✔ Cierre limpio del proceso
+---
 
-🧠 Heurísticas de Rediseño Aplicadas
-Heurística	Aplicación en el TO-BE
-Resequencing / Knock-Out	Se verifica disponibilidad y requisitos antes de registrar al voluntario.
-Parallelism	Algunas actividades pueden gestionarse sin detener el flujo (p. ej., registro vs. comunicación).
-Contact Reduction	El voluntario recibe una confirmación final clara y única.
-Exception Handling	Se implementó proceso para lista de espera y rechazo.
-⚙️ Impacto del Rediseño (Devil’s Quadrangle)
-Criterio	Impacto	Justificación
-Tiempo	⬇️	Se elimina trabajo manual innecesario y se ordena el flujo.
-Costo	⬇️	Menos retrabajo y menos pasos redundantes.
-Calidad	⬆️	Confirmación clara, registro formal, trazabilidad.
-Flexibilidad	≈	El proceso es más estructurado, pero sigue permitiendo manejo de casos especiales.
-🏁 Conclusión
+## 6. Conclusión
 
-El rediseño logra transformar un proceso informal y fragmentado en una secuencia clara, trazable y estandarizada.
-La separación en tres procesos TO-BE permite transparencia, control y alineación con la rúbrica del curso, asegurando que cada actor desempeñe solo las funciones que realmente le corresponden.
+El rediseño del Proceso de Voluntariado ofrece un flujo más claro, eficiente y trazable.  
+La separación por actores mejora la organización, reduce tiempos y permite una gestión coherente desde la inscripción del voluntario hasta la confirmación final por parte del albergue.
+
+Se incluyen los tres diagramas TO-BE:
+- TO-BE Voluntario  
+- TO-BE Administrador / Coordinador  
+- TO-BE Albergue  
+
